@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import com.pravalika.projects.resumeportal.repository.UserRepository;
 
 @SpringBootApplication
-@EnableJpaRepositories(basePackageClasses = UserRepository.class)
+@EnableJpaRepositories(basePackages = {"com.pravalika.projects.resumeportal.repository"})
 public class ResumePortalApplication {
 
 	public static void main(String[] args) {
