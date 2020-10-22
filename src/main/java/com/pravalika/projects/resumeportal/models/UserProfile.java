@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -29,15 +30,37 @@ public class UserProfile {
 	private String phone;
 	private String designation;
 	
-	@Override
-	public String toString() {
-		return "UserProfile [id=" + id + ", theme=" + theme + ", summary=" + summary + ", userName=" + userName
-				+ ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email + ", phone=" + phone
-				+ ", designation=" + designation + ", jobs=" + jobs + "]";
-	}
-	@OneToMany(cascade = CascadeType.ALL,orphanRemoval=true)
+    @ElementCollection(targetClass=String.class)
+
+    List<String> skills = new ArrayList<String>();
+    
+    @OneToMany(cascade = CascadeType.ALL,
+            orphanRemoval = true)
+    @JoinColumn(name = "education_id")
+    List<Education> educations = new ArrayList<Education>();
+    
+    @OneToMany(cascade = CascadeType.ALL,orphanRemoval=true)
 	@JoinColumn(name="job_id")
 	private List<Job> jobs=new ArrayList<Job>();
+	
+
+    public List<String> getSkills() {
+        return skills;
+    }
+
+    public void setSkills(List<String> skills) {
+        this.skills = skills;
+    }
+
+    public List<Education> getEducations() {
+        return educations;
+    }
+
+    public void setEducations(List<Education> educations) {
+        this.educations = educations;
+    }
+	
+	
 	
 	public List<Job> getJobs() {
 		return jobs;
@@ -98,6 +121,12 @@ public class UserProfile {
 	}
 	public void setSummary(String summary) {
 		this.summary = summary;
+	}
+	@Override
+	public String toString() {
+		return "UserProfile [id=" + id + ", theme=" + theme + ", summary=" + summary + ", userName=" + userName
+				+ ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email + ", phone=" + phone
+				+ ", designation=" + designation + ", jobs=" + jobs + "]";
 	}
 	
 }
