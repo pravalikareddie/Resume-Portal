@@ -1,5 +1,6 @@
 package com.pravalika.projects.resumeportal;
 
+import java.security.Principal;
 import java.time.LocalDate;
 import java.util.Optional;
 
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.pravalika.projects.resumeportal.models.Education;
@@ -81,15 +83,25 @@ public class HomeController {
 
 	        return "profile";
 	}
-	@GetMapping("/edit")
-	public String testAdmin() {
-		return "Hello Authenticated User";
-	}
+	
 	@GetMapping("/view/{userName}")
 	public String view(@PathVariable("userName") String userName,Model model) {
 		Optional<UserProfile> userProfile = userProfileRepository.findByUserName(userName);
 		model.addAttribute("profile",userProfile.get());
 		return "resume-templates/"+userProfile.get().getTheme()+"/index";
+	}
+	@GetMapping("/edit")
+	public String edit(Model model,Principal principal) {
+		model.addAttribute("userId",principal.getName());
+		Optional<UserProfile> userProfile = userProfileRepository.findByUserName(principal.getName());
+		userProfile.orElseThrow(() -> new RuntimeException("Not found "));
+		model.addAttribute("profile",userProfile.get());
+		return "edit";
+	}
+	@PostMapping("/edit")
+	public String postEdit(Model model,Principal principal) {
+		
+		return "redirect:/view"+principal.getName();
 	}
 
 }

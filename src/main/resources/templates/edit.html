@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Profile</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
+</head>
+<body>
+<h1 th:text="${userId}">Profile</h1>
+<form action="#" th:object="${profile}" th:action="@{/edit}" method="post">
+<div class="container">
+<div class="form-group">
+            <label>First Name</label>
+            <input class="form-control" th:field="*{firstName}">
+        </div>
+
+        <div class="form-group">
+            <label>Last Name</label>
+            <input class="form-control" th:field="*{lastName}">
+        </div>
+
+        <div class="form-group">
+            <label>Email address</label>
+            <input  class="form-control" th:field="*{email}">
+        </div>
+
+        <div class="form-group">
+            <label>Phone</label>
+            <input class="form-control" th:field="*{phone}">
+        </div>
+
+        <div class="form-group">
+            <label>Designation</label>
+            <input class="form-control" th:field="*{designation}">
+        </div>
+
+        <div class="form-group">
+            <label>Summary</label>
+            <textarea class="form-control" th:field="*{summary}"></textarea>
+        </div>
+         <h3>Experience</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Company</th>
+                    <th>Designation</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Current Job?</th>
+                    <th></th>
+                </tr>
+            </thead>
+            
+        </table>
+
+
+</div>
+</form>
+</body>
+</html>
