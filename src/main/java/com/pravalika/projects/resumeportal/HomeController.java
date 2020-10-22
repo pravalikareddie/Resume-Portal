@@ -87,7 +87,11 @@ public class HomeController {
 	}
 
 	@GetMapping("/view/{userName}")
-	public String view(@PathVariable("userName") String userName,Model model) {
+	public String view(Principal principal,@PathVariable("userName") String userName,Model model) {
+		if (principal != null && principal.getName() != "") {
+            boolean currentUsersProfile = principal.getName().equals(userName);
+            model.addAttribute("currentUsersProfile", currentUsersProfile);
+        }
 		Optional<UserProfile> userProfile = userProfileRepository.findByUserName(userName);
 		model.addAttribute("profile",userProfile.get());
 		return "resume-templates/"+userProfile.get().getTheme()+"/index";
@@ -98,15 +102,31 @@ public class HomeController {
 		Optional<UserProfile> userProfile = userProfileRepository.findByUserName(principal.getName());
 		userProfile.orElseThrow(() -> new RuntimeException("Not found "));
 		if ("job".equals(add)) {
-            userProfile.get().getJobs().add(new Job());
-        } else if ("education".equals(add)) {
-            userProfile.get().getEducations().add(new Education());
-        } else if ("skill".equals(add)) {
-            userProfile.get().getSkills().add("");
-        }
-        model.addAttribute("profile", userProfile.get());
+			userProfile.get().getJobs().add(new Job());
+		} else if ("education".equals(add)) {
+			userProfile.get().getEducations().add(new Education());
+		} else if ("skill".equals(add)) {
+			userProfile.get().getSkills().add("");
+		}
+		model.addAttribute("profile", userProfile.get());
 
 		return "edit";
+	}
+	@GetMapping("/delete")
+	public String delete(Model model, Principal principal, @RequestParam String type, @RequestParam int index) {
+		String userId = principal.getName();
+		Optional<UserProfile> userProfileOptional = userProfileRepository.findByUserName(userId);
+		userProfileOptional.orElseThrow(() -> new RuntimeException("Not found: " + userId));
+		UserProfile userProfile = userProfileOptional.get();
+		if ("job".equals(type)) {
+			userProfile.getJobs().remove(index);
+		} else if ("education".equals(type)) {
+			userProfile.getEducations().remove(index);
+		} else if ("skill".equals(type)) {
+			userProfile.getSkills().remove(index);
+		}
+		userProfileRepository.save(userProfile);
+		return "redirect:/edit";
 	}
 
 	@PostMapping("/edit")
@@ -118,14 +138,14 @@ public class HomeController {
 		System.out.println(profile.toString());
 
 		System.out.println(userProfile.toString());
-		
 
 
-	profile.setId(userProfile.get().getId());
 
-	profile.setUserName(principal.getName());
-	userProfileRepository.save(profile);
-	return "redirect:/view/"+principal.getName();
-}
+		profile.setId(userProfile.get().getId());
+
+		profile.setUserName(principal.getName());
+		userProfileRepository.save(profile);
+		return "redirect:/view/"+principal.getName();
+	}
 
 }

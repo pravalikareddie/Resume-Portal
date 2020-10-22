@@ -39,7 +39,11 @@
             <!-- Microformats! -->
         
             <h1 class="fn"> <span th:text="${profile.firstName}">John </span>
-			 	 <span th:text="${profile.lastName}">John</span></h1>
+			 	 <span th:text="${profile.lastName}">John</span>
+			 	 								<a th:if="${currentUsersProfile}" href="/edit">Edit</a>
+			 	 
+			 	 </h1>
+			 	 
         
             <p>
                 Cell: <span class="tel" th:text="${profile.phone}">555-666-7777</span><br />

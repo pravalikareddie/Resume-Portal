@@ -68,6 +68,9 @@
 							th:field="*{jobs[__${stat.index}__].startDate}"></td>
 						<td><input type="date" class="form-control"
 							th:field="*{jobs[__${stat.index}__].endDate}"></td>
+						<td><a
+							th:href="@{'./delete?type=job&index=' + ${stat.index}}">Delete</a></td>
+
 					</tr>
 				</thead>
 
@@ -99,6 +102,9 @@
 						th:field="*{educations[__${stat.index}__].endDate}"></td>
 					<td><input class="form-control"
 						th:field="*{educations[__${stat.index}__].summary}"></td>
+					<td><a
+						th:href="@{'./delete?type=education&index=' + ${stat.index}}">Delete</a></td>
+
 				</tr>
 			</table>
 			<p>
@@ -109,10 +115,13 @@
 				<tr th:each="skill, stat: *{skills}">
 					<td><input class="form-control"
 						th:field="*{skills[__${stat.index}__]}"></td>
+					<td><a
+						th:href="@{'./delete?type=skill&index=' + ${stat.index}}">Delete</a></td>
+
 				</tr>
 			</table>
 
-				<a href="./edit?add=skill">Add</a>
+			<a href="./edit?add=skill">Add</a>
 
 		</div>
 		<input type="submit" value="Submit">

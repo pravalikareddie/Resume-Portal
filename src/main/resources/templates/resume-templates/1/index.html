@@ -33,6 +33,8 @@
 			<ul>
 				<li th:text="${profile.email}">e: Joe@bloggs.com</li>
 				<li th:text="${profile.phone}">m: 01234567890</li>
+								<a th:if="${currentUsersProfile}" href="/edit">Edit</a>
+				
 			</ul>
 		</div>
 		<div class="clear"></div>
